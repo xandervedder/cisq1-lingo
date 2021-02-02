@@ -15,3 +15,9 @@ jobs:
       - name: Build with Maven
         # verify is used to install *and* test the integrity of the package (i.e. tests)
         run: mvn --batch-mode -Dspring.profiles.active=ci --update-snapshots verify
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
