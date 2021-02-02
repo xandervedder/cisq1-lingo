@@ -13,4 +13,5 @@ jobs:
         with:
           java-version: 11
       - name: Build with Maven
+        # verify is used to install *and* test the integrity of the package (i.e. tests)
         run: mvn --batch-mode -Dspring.profiles.active=ci --update-snapshots verify
