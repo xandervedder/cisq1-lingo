@@ -38,3 +38,33 @@ Feature: Lingo Trainer
       | BAARD | BARST   | CORRECT, CORRECT, PRESENT, ABSENT, ABSENT             |
       | BAARD | DRAAD   | ABSENT, PRESENT, CORRECT, PRESENT, CORRECT            |
       | BAARD | BAARD   | CORRECT, CORRECT, CORRECT, CORRECT, CORRECT           |
+
+  Scenario: Succesful guessing attempt
+    Given I am playing a game
+    And   I have guessed correctly
+    Then  my score should increase
+    And   the score should be "5"
+
+  Scenario: Five unsuccesful attempts
+    Given I am playing a game
+    And   I have "5" unsuccesful attempts
+    Then  the round is over
+
+  Scenario: Word already guessed
+    Given I am playing a game
+    And   I have already guessed the word "word"
+    Then  a new round will be started
+
+  Scenario: Player can't guess if the player is eliminated
+    Given I am playing a game
+    And   I am eliminated
+    Then  I should not be able to guess
+
+  Scenario: Player can't start a new round if the player is still guessing
+    Given I am playing a game
+    And   I am still guessing a word
+    Then  I should not be able to start a new round
+
+  Scenario: Player can't start a new round if the player hasn't started a game
+    Given I am not playing a game
+    Then I should not be able to start a new round
