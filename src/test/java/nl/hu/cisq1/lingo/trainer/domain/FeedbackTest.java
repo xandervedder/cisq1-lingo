@@ -10,14 +10,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FeedbackTest {
     @Test
-    @DisplayName("word is guessed if all letters are correct")
+    @DisplayName("Word is guessed if all letters are correct")
     void wordIsGuessed() {
         var feedback = new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT));
         assertTrue(feedback.isWordGuessed());
     }
 
     @Test
-    @DisplayName("word isn't guessed if one or more letters are incorrect")
+    @DisplayName("Word isn't guessed if one or more letters are incorrect")
     void wordIsNotGuessed() {
         var feedback = new Feedback("woord", List.of(Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.ABSENT));
         assertFalse(feedback.isWordGuessed());
@@ -54,13 +54,13 @@ class FeedbackTest {
     }
 
     @Test
-    @DisplayName("word is guessed when using the static 'correct' constructor")
+    @DisplayName("Word is guessed when using the static 'correct' constructor")
     void wordIsGuessedUsingStaticConstructor() {
         assertTrue(Feedback.correct("woord").isWordGuessed());
     }
 
     @Test
-    @DisplayName("word isn't guessed when using the static 'invalid' constructor")
+    @DisplayName("Word isn't guessed when using the static 'invalid' constructor")
     void wordIsNotGuessedUsingStaticConstructor() {
         assertFalse(Feedback.invalid("09248").isWordGuessed());
     }
