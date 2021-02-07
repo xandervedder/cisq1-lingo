@@ -1,5 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
+import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidFeedbackException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -33,5 +34,22 @@ class FeedbackTest {
     @DisplayName("The guess is invalid when it contains one or more numbers")
     void guessIsInvalid() {
         var feedback = new Feedback("wo4rd", List.of(Mark.ABSENT, Mark.CORRECT, Mark.INVALID, Mark.CORRECT, Mark.ABSENT));
+    }
+
+    @Test
+    @DisplayName("Exception is not expected when word length is equivalent to marks length")
+    void guessIsEquivalentToMarksLength() {
+        assertDoesNotThrow(
+                () -> new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))
+        );
+    }
+
+    @Test
+    @DisplayName("Exception is expected when word length is not equivalent to marks length")
+    void guessIsNotEquivalentToMarksLength() {
+        assertThrows(
+                InvalidFeedbackException.class,
+                () -> new Feedback("woord", List.of(Mark.CORRECT))
+        );
     }
 }
