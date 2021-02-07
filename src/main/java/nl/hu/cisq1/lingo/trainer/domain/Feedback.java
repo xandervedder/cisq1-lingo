@@ -9,6 +9,14 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 public class Feedback {
+    public static Feedback correct(String attempt) {
+        return new Feedback(attempt, List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT));
+    }
+
+    public static Feedback invalid(String attempt) {
+        return new Feedback(attempt, List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID));
+    }
+
     private String attempt;
     private List<Mark> marks;
 

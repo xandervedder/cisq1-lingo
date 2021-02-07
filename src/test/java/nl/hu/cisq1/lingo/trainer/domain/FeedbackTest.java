@@ -52,4 +52,28 @@ class FeedbackTest {
                 () -> new Feedback("woord", List.of(Mark.CORRECT))
         );
     }
+
+    @Test
+    @DisplayName("word is guessed when using the static 'correct' constructor")
+    void wordIsGuessedUsingStaticConstructor() {
+        assertTrue(Feedback.correct("woord").isWordGuessed());
+    }
+
+    @Test
+    @DisplayName("word isn't guessed when using the static 'invalid' constructor")
+    void wordIsNotGuessedUsingStaticConstructor() {
+        assertFalse(Feedback.invalid("09248").isWordGuessed());
+    }
+
+    @Test
+    @DisplayName("The guess is valid when using the static 'correct' constructor")
+    void guessIsValidUsingStaticConstructor() {
+        assertTrue(Feedback.correct("woord").isGuessValid());
+    }
+
+    @Test
+    @DisplayName("The guess is invalid when using the static 'invalid' constructor")
+    void guessIsInvalidUsingStaticConstructor() {
+        assertFalse(Feedback.invalid("09248").isGuessValid());
+    }
 }
