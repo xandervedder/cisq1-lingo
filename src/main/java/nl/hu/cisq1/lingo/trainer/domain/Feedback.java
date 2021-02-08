@@ -2,29 +2,25 @@ package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidFeedbackException;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @ToString
 @EqualsAndHashCode
 public class Feedback {
     public static Feedback correct(String attempt) {
-        return new Feedback(attempt, List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT));
+        return new Feedback(attempt.chars().mapToObj(i -> Mark.CORRECT).collect(Collectors.toList()));
     }
 
     public static Feedback invalid(String attempt) {
-        return new Feedback(attempt, List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID));
+        return new Feedback(attempt.chars().mapToObj(i -> Mark.INVALID).collect(Collectors.toList()));
     }
 
-    private String attempt;
-    private List<Mark> marks;
+    private final List<Mark> marks; // Validating is done by another class
 
-    public Feedback(String attempt, List<Mark> marks) {
-        if (attempt.length() != marks.size())
-            throw new InvalidFeedbackException();
-
-        this.attempt = attempt;
+    public Feedback(List<Mark> marks) {
         this.marks = marks;
     }
 
@@ -34,5 +30,16 @@ public class Feedback {
 
     public boolean isGuessValid() {
         return this.marks.stream().allMatch(mark -> mark != Mark.INVALID);
+    }
+
+    public Hint giveHint(Hint previousHint, String wordToGuess) {
+        var letters = wordToGuess.toCharArray();
+        var hints = IntStream.range(0, this.marks.size())
+                // Doing for-loops the cool way... B)
+                .mapToObj(index -> marks.get(index) == Mark.CORRECT ? letters[index] : '.')
+                .collect(Collectors.toList());
+
+        previousHint.replaceWith(hints);
+        return previousHint;
     }
 }
