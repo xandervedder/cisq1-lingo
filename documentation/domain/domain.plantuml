@@ -1,0 +1,57 @@
+@startuml domain
+
+class Feedback {
+
+}
+
+class Game {
+
+}
+
+class Guess {
+  - value
+}
+
+class Hint {
+  - value
+}
+
+enum Mark {
+  ABSENT,
+  CORRECT
+  INVALID
+  PRESENT
+}
+
+class Player {
+  - name
+}
+
+class Round {
+
+}
+
+class Score {
+
+}
+
+class Turn {
+
+}
+
+class Word {
+  - value
+  - length
+}
+
+Game "1" -- "0..*" Round
+Game "1" -- "1" Player
+Round "1" -- "0..5" Turn
+Round "0..*" -- "1" Word
+Round "1" -- "1" Score
+Hint "1" -- "0..*" Feedback
+Turn "1" -- "1" Hint
+Turn "1" -- "1" Guess
+Feedback "0..*" -- "1..*" Mark
+
+@enduml
