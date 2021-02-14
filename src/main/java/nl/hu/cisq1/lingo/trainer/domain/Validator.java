@@ -21,14 +21,14 @@ public class Validator {
         var wordLetters = word.getValue().toCharArray();
 
         // The first *real* step is to validate three different Marks:
-        // 1. INVALID - If the character is a digit (TODO: this should probably be expanded to whitespace and special characters)
+        // 1. INVALID - If the character is a digit or not a letter
         // 2. CORRECT - If the character is in the right spot and is equal
         // 3. ABSENT - If the character is not in the letter or is to be processed in the next step
         var initialMarks = IntStream.range(0, guess.getLength())
                 .mapToObj(index -> {
                     var letter = letters[index];
                     var actualLetter = wordLetters[index];
-                    if (Character.isDigit(letter)) return Mark.INVALID;
+                    if (Character.isDigit(letter) || !Character.isLetter(letter)) return Mark.INVALID;
                     else if (letter == actualLetter) return Mark.CORRECT;
                     else return Mark.ABSENT;
                 })

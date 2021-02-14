@@ -56,6 +56,11 @@ class ValidatorTest {
                         new Word("kruis")
                 ),
                 Arguments.of(
+                        new Feedback(List.of(Mark.CORRECT, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.CORRECT)),
+                        new Word("k-*-s"),
+                        new Word("kruis")
+                ),
+                Arguments.of(
                         new Feedback(List.of(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT)),
                         new Word("kouis"),
                         new Word("kruis")
