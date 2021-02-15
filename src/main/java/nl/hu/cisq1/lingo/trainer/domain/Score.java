@@ -1,16 +1,13 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
-import lombok.Getter;
-
 public class Score {
-    @Getter
-    private Integer value;
+    private final Integer numTurns;
 
-    public Score() {
-        this.value = 0;
+    public Score(Integer numTurns) {
+        this.numTurns = numTurns;
     }
 
-    public void calculate(Integer numTurns) {
-        this.value = 5 * (5 - numTurns) + 5;
+    public Integer calculate() {
+        return 5 * (5 - this.numTurns) + 5;
     }
 }

@@ -14,9 +14,8 @@ class ScoreTest {
     @DisplayName("score should be calculated correctly")
     @MethodSource("provideArgumentsForCalculation")
     void shouldCalculateCorrectlyBasedOnTurn(Integer expectedScore, Integer numTurn) {
-        var score = new Score();
-        score.calculate(numTurn);
-        assertEquals(expectedScore, score.getValue());
+        var score = new Score(numTurn);
+        assertEquals(expectedScore, score.calculate());
     }
 
     private static Stream<Arguments> provideArgumentsForCalculation() {
