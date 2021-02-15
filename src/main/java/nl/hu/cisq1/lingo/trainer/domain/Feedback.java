@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,11 +26,11 @@ public class Feedback {
     }
 
     public boolean isWordGuessed() {
-        return this.marks.stream().allMatch(mark -> mark == Mark.CORRECT);
+        return this.marks.stream().allMatch(Mark.CORRECT::equals);
     }
 
     public boolean isGuessValid() {
-        return this.marks.stream().allMatch(mark -> mark != Mark.INVALID);
+        return this.marks.stream().allMatch(Predicate.not(Mark.INVALID::equals));
     }
 
     public Hint giveHint(Hint previousHint, String wordToGuess) {
