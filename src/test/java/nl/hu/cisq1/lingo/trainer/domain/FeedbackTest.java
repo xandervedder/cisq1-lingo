@@ -78,6 +78,12 @@ class FeedbackTest {
                         new Feedback(List.of(Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT)),
                         new Hint(List.of('.', '.', '.', '.', '.')),
                         "kaart"
+                ),
+                Arguments.of(
+                        new Hint(List.of('k', '+', '.', '.', '.')),
+                        new Feedback(List.of(Mark.CORRECT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT)),
+                        new Hint(List.of('.', '.', '.', '.', '.')),
+                        "kaart"
                 )
         );
     }

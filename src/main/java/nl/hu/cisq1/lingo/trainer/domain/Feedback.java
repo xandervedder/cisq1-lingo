@@ -37,7 +37,11 @@ public class Feedback {
         var letters = wordToGuess.toCharArray();
         var hints = IntStream.range(0, this.marks.size())
                 // Doing for-loops the cool way... B)
-                .mapToObj(index -> marks.get(index) == Mark.CORRECT ? letters[index] : '.')
+                .mapToObj(index -> switch(this.marks.get(index)) {
+                    case CORRECT -> letters[index];
+                    case PRESENT -> '+';
+                    default -> '.';
+                })
                 .collect(Collectors.toList());
 
         previousHint.replaceWith(hints);
