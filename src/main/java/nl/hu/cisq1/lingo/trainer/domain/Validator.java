@@ -44,7 +44,7 @@ public class Validator {
             leftOverLettersBuilder.append(letters[i]);
         }
 
-        // In this step we check if the leftover of the guess are the leftovers of the to be guessed word
+        // In this step we check if the leftovers of the guess are equal to the leftovers of the to be guessed word
         var leftOverWordLetters = leftOverWordLettersBuilder.toString();
         var leftOverLetters = leftOverLettersBuilder.toString();
         var leftOverLettersArray = leftOverLetters.toCharArray();
