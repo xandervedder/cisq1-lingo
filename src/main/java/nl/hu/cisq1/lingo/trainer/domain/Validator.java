@@ -56,7 +56,7 @@ public class Validator {
                 // The last step is going of the marks again, but this time replace the ABSENT entries with whatever
                 // is in the newly generated list from the previous step
                 initialMarks.stream().map(initialMark -> {
-                    if (initialMark != Mark.ABSENT || presentMarks.size() == 0) return initialMark;
+                    if (initialMark != Mark.ABSENT) return initialMark;
 
                     var presentMark = presentMarks.get(0);
                     presentMarks.remove(0);

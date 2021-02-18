@@ -84,6 +84,11 @@ class ValidatorTest {
                         new Feedback(List.of(Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.CORRECT, Mark.PRESENT)),
                         new Word("aaabab"),
                         new Word("bbbaaa")
+                ),
+                Arguments.of(
+                        new Feedback(List.of(Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT)),
+                        new Word("aaaaaa"),
+                        new Word("bbbbbb")
                 )
         );
     }
