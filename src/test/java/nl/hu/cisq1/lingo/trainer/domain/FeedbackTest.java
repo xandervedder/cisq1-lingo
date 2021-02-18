@@ -62,10 +62,10 @@ class FeedbackTest {
     private static Stream<Arguments> provideHintExamples() {
         return Stream.of(
                 Arguments.of(
-                        new Hint(List.of('w', '.', '.', 'r', 'd')),
-                        new Feedback(List.of(Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.CORRECT, Mark.CORRECT)),
                         new Hint(List.of('.', '.', '.', '.', '.')),
-                        "woord"
+                        new Feedback(List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID)),
+                        new Hint(List.of('.', '.', '.', '.', '.')),
+                        "kaart"
                 ),
                 Arguments.of(
                         new Hint(List.of('b', 'a', 'a', 'r', 'd')),
@@ -78,6 +78,24 @@ class FeedbackTest {
                         new Feedback(List.of(Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT)),
                         new Hint(List.of('.', '.', '.', '.', '.')),
                         "kaart"
+                ),
+                Arguments.of(
+                        new Hint(List.of('w', '.', '.', 'r', 'd')),
+                        new Feedback(List.of(Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.CORRECT, Mark.CORRECT)),
+                        new Hint(List.of('.', '.', '.', '.', '.')),
+                        "woord"
+                ),
+                Arguments.of(
+                        new Hint(List.of('w', '.', '.', 'r', 'd')),
+                        new Feedback(List.of(Mark.CORRECT, Mark.INVALID, Mark.INVALID, Mark.CORRECT, Mark.CORRECT)),
+                        new Hint(List.of('.', '.', '.', '.', '.')),
+                        "woord"
+                ),
+                Arguments.of(
+                        new Hint(List.of('.', '.', '.', '.', '.')),
+                        new Feedback(List.of(Mark.ABSENT, Mark.INVALID, Mark.INVALID, Mark.ABSENT, Mark.ABSENT)),
+                        new Hint(List.of('.', '.', '.', '.', '.')),
+                        "woord"
                 ),
                 Arguments.of(
                         new Hint(List.of('k', '+', '.', '.', '.')),
