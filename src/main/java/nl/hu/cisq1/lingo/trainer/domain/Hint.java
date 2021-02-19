@@ -28,7 +28,7 @@ public class Hint {
                 .mapToObj(index -> {
                     var currentCharacter = this.values.get(index);
                     var newCharacter = values.get(index);
-                    if (currentCharacter == DOT) return newCharacter;
+                    if (currentCharacter.equals(DOT)) return newCharacter;
                     else return currentCharacter;
                 })
                 .collect(Collectors.toList());

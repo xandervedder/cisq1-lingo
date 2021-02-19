@@ -25,7 +25,8 @@ class HintTest {
     @DisplayName("replaceWith method throws if the size between the hints differ")
     void replaceHintWithException() {
         var hint = new Hint(List.of('.', '.', '.', '.', '.'));
-        assertThrows(InvalidHintReplacementException.class, () -> hint.replaceWith(List.of('.')));
+        var newHints = List.of('.');
+        assertThrows(InvalidHintReplacementException.class, () -> hint.replaceWith(newHints));
     }
 
     @Test
