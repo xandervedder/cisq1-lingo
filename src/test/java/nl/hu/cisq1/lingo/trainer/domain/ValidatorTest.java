@@ -20,7 +20,8 @@ class ValidatorTest {
     @Test
     @DisplayName("throw exception when words do not equal in size")
     void shouldThrowWhenLengthsAreNotEqual() {
-        assertThrows(IncompatibleLengthException.class, () -> instance.validate(new Word("banaan"), correctWord));
+        var word = new Word("banaan");
+        assertThrows(IncompatibleLengthException.class, () -> instance.validate(word, correctWord));
     }
 
     @Test
