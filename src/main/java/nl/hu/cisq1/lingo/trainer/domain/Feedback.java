@@ -1,8 +1,12 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -10,6 +14,7 @@ import java.util.stream.IntStream;
 
 @ToString
 @EqualsAndHashCode
+@Entity(name = "feedback")
 public class Feedback {
     public static Feedback correct(String attempt) {
         return new Feedback(attempt.chars().mapToObj(i -> Mark.CORRECT).collect(Collectors.toList()));
@@ -19,8 +24,14 @@ public class Feedback {
         return new Feedback(attempt.chars().mapToObj(i -> Mark.INVALID).collect(Collectors.toList()));
     }
 
-    private final List<Mark> marks; // Validating is done by another class
+    @Id
+    private Integer id;
 
+    @Setter
+    @ElementCollection
+    private List<Mark> marks;
+
+    public Feedback() {}
     public Feedback(List<Mark> marks) {
         this.marks = marks;
     }

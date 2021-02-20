@@ -2,11 +2,23 @@ package nl.hu.cisq1.lingo.trainer.domain;
 
 import nl.hu.cisq1.lingo.words.domain.Word;
 
-public class Turn {
-    private final Validator validator;
-    private final Word guess;
-    private final Word toBeGuessedWord;
+import javax.persistence.*;
 
+@Entity(name = "turn")
+public class Turn {
+    @Id
+    private Integer id;
+
+    @Transient
+    private Validator validator;
+
+    @ManyToOne
+    private Word guess;
+
+    @ManyToOne
+    private Word toBeGuessedWord;
+
+    public Turn() {}
     public Turn(Validator validator, Word guess, Word toBeGuessedWord) {
         this.validator = validator;
         this.guess = guess;

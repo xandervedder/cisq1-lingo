@@ -4,21 +4,33 @@ import lombok.Getter;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundFinishedException;
 import nl.hu.cisq1.lingo.words.domain.Word;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Entity(name = "round")
 public class Round {
     private static final Integer MAX_TRIES = 5;
     private static final Validator VALIDATOR = new Validator();
 
-    private final List<Feedback> feedbackList;
-    private final List<Turn> turns;
-    private final Word toBeGuessedWord;
+    @Id
+    private Integer id;
 
     @Getter
-    private final Hint currentHint;
+    @Transient
+    private Hint currentHint;
 
+    @OneToMany
+    private List<Feedback> feedbackList;
+
+    @OneToMany
+    private List<Turn> turns;
+
+    @OneToOne
+    private Word toBeGuessedWord;
+
+    public Round() {}
     public Round(Word toBeGuessedWord) {
         this.feedbackList = new ArrayList<>(5);
         this.turns = new ArrayList<>(5);
@@ -43,6 +55,8 @@ public class Round {
         this.feedbackList.add(feedback);
 
         var hint = feedback.giveHint(this.currentHint, this.toBeGuessedWord.getValue());
+
+        // TODO: you can probably remove this:
         this.currentHint.replaceWith(hint.getValues());
 
         return feedback;
