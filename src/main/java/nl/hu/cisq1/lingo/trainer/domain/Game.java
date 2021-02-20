@@ -50,8 +50,8 @@ public class Game {
                 .orElse(null);
     }
 
-    public Integer getLetterLength(Integer roundNumber) {
-        var index = (roundNumber - 1) % 3;
+    public Integer currentLetterLength() {
+        var index = (this.rounds.size() - 1) % 3;
         return switch(index) {
             case 1 -> 6;
             case 2 -> 7;

@@ -2,7 +2,6 @@ package nl.hu.cisq1.lingo.trainer.domain;
 
 import nl.hu.cisq1.lingo.trainer.domain.exception.ActiveRoundException;
 import nl.hu.cisq1.lingo.trainer.domain.exception.NoActiveRoundException;
-import nl.hu.cisq1.lingo.words.domain.Word;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -75,18 +74,23 @@ class GameTest {
     @ParameterizedTest
     @DisplayName("getLetterLength should return the correct letter length")
     @MethodSource("provideArgumentsForLetterLength")
-    void shouldReturnCorrectLetterLengthBasedOnRoundNumber(Integer expected, Integer roundNumber) {
-        assertEquals(expected, this.instance.getLetterLength(roundNumber));
+    void shouldReturnCorrectLetterLengthBasedOnRoundNumber(Integer expected, List<String> wordsToBeGuessed, List<String> guesses) {
+        wordsToBeGuessed.forEach(word -> {
+            this.instance.startNewRound(word);
+            guesses.forEach(this.instance::play);
+        });
+
+        assertEquals(expected, this.instance.currentLetterLength());
     }
 
     private static Stream<Arguments> provideArgumentsForLetterLength() {
         return Stream.of(
-                Arguments.of(5, 1),
-                Arguments.of(6, 2),
-                Arguments.of(7, 3),
-                Arguments.of(5, 10),
-                Arguments.of(6, 11),
-                Arguments.of(7, 12)
+                Arguments.of(5, List.of(theWord), List.of(theWord)),
+                Arguments.of(6, List.of(theWord, theWord), List.of(theWord)),
+                Arguments.of(7, List.of(theWord, theWord, theWord), List.of(theWord)),
+                Arguments.of(5, List.of(theWord, theWord, theWord, theWord), List.of(theWord)),
+                Arguments.of(6, List.of(theWord, theWord, theWord, theWord, theWord), List.of(theWord)),
+                Arguments.of(7, List.of(theWord, theWord, theWord, theWord, theWord, theWord), List.of(theWord))
         );
     }
 
