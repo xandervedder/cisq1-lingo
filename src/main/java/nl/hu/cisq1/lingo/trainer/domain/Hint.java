@@ -7,6 +7,7 @@ import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidHintReplacementExceptio
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +20,8 @@ public class Hint {
     private static final Character DOT = '.';
 
     @Id
-    private Integer id;
+    @GeneratedValue
+    private Long id;
 
     @Getter
     @ElementCollection

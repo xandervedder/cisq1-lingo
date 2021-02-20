@@ -14,7 +14,8 @@ public class Round {
     private static final Validator VALIDATOR = new Validator();
 
     @Id
-    private Integer id;
+    @GeneratedValue
+    private Long id;
 
     @Getter
     @Transient

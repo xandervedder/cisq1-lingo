@@ -1,11 +1,11 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 import nl.hu.cisq1.lingo.trainer.domain.exception.ActiveRoundException;
 import nl.hu.cisq1.lingo.trainer.domain.exception.NoActiveRoundException;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -15,12 +15,13 @@ import java.util.function.Predicate;
 @Entity(name = "game")
 public class Game {
     @Id
-    private Integer id;
+    @GeneratedValue
+    @Getter
+    private Long id;
 
     @Getter
-    @Setter
     @OneToMany
-    private List<Round> rounds;
+    private final List<Round> rounds;
 
     public Game() {
         this.rounds = new ArrayList<>();

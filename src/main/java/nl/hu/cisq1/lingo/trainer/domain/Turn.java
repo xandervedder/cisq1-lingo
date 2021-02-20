@@ -1,14 +1,12 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 @Entity(name = "turn")
 public class Turn {
     @Id
-    private Integer id;
+    @GeneratedValue
+    private Long id;
 
     @Transient
     private Validator validator;

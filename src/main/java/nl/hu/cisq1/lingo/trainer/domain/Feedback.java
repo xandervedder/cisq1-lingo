@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.List;
 import java.util.function.Predicate;
@@ -25,7 +26,8 @@ public class Feedback {
     }
 
     @Id
-    private Integer id;
+    @GeneratedValue
+    private Long id;
 
     @Setter
     @ElementCollection
