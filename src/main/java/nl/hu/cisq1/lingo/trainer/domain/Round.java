@@ -2,7 +2,6 @@ package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.Getter;
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundFinishedException;
-import nl.hu.cisq1.lingo.words.domain.Word;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,24 +26,24 @@ public class Round {
     @OneToMany
     private List<Turn> turns;
 
-    @OneToOne
-    private Word toBeGuessedWord;
+    @Column(name = "theWord")
+    private String toBeGuessedWord;
 
     public Round() {}
-    public Round(Word toBeGuessedWord) {
+    public Round(String toBeGuessedWord) {
         this.feedbackList = new ArrayList<>(5);
         this.turns = new ArrayList<>(5);
         this.toBeGuessedWord = toBeGuessedWord;
 
-        var startingHints = toBeGuessedWord.getValue().chars()
+        var startingHints = toBeGuessedWord.chars()
                 .mapToObj(index -> '.')
                 .collect(Collectors.toList());
-        startingHints.set(0, toBeGuessedWord.getValue().toCharArray()[0]);
+        startingHints.set(0, toBeGuessedWord.toCharArray()[0]);
 
         this.currentHint = new Hint(startingHints);
     }
 
-    public Feedback continueRound(Word guess) {
+    public Feedback continueRound(String guess) {
         if (this.isRoundFinished())
             throw new RoundFinishedException();
 
@@ -54,7 +53,7 @@ public class Round {
         var feedback = turn.doTurn();
         this.feedbackList.add(feedback);
 
-        var hint = feedback.giveHint(this.currentHint, this.toBeGuessedWord.getValue());
+        var hint = feedback.giveHint(this.currentHint, this.toBeGuessedWord);
 
         // TODO: you can probably remove this:
         this.currentHint.replaceWith(hint.getValues());

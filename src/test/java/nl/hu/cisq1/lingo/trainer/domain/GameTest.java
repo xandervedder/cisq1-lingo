@@ -16,8 +16,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
-    private static final Word theWord = new Word("banaan");
-    private static final Word incorrectWord = new Word("banana");
+    private static final String theWord = "banaan";
+    private static final String incorrectWord = "banana";
 
     private Game instance = new Game();
 
@@ -93,7 +93,7 @@ class GameTest {
     @ParameterizedTest
     @DisplayName("calculateScore should return the correct score based on the rounds that have passed")
     @MethodSource("provideArgumentsForCalculateScore")
-    void shouldReturnCorrectScoreBasedOnTheRounds(Integer expectedScore, List<Word> wordsToBeGuessed, List<Word> guesses) {
+    void shouldReturnCorrectScoreBasedOnTheRounds(Integer expectedScore, List<String> wordsToBeGuessed, List<String> guesses) {
         wordsToBeGuessed.forEach(word -> {
             this.instance.startNewRound(word);
             guesses.forEach(this.instance::play);

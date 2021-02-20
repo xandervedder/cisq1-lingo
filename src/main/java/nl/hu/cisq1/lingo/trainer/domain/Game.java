@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.hu.cisq1.lingo.trainer.domain.exception.ActiveRoundException;
 import nl.hu.cisq1.lingo.trainer.domain.exception.NoActiveRoundException;
-import nl.hu.cisq1.lingo.words.domain.Word;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,7 +26,7 @@ public class Game {
         this.rounds = new ArrayList<>();
     }
 
-    public void startNewRound(Word wordToBeGuessed) {
+    public void startNewRound(String wordToBeGuessed) {
         if (this.activeRound() != null)
             throw new ActiveRoundException();
 
@@ -36,7 +35,7 @@ public class Game {
         this.rounds.add(new Round(wordToBeGuessed));
     }
 
-    public Feedback play(Word guess) {
+    public Feedback play(String guess) {
         var round = this.activeRound();
         if (round == null)
             throw new NoActiveRoundException();

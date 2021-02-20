@@ -1,8 +1,9 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
-import nl.hu.cisq1.lingo.words.domain.Word;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity(name = "turn")
 public class Turn {
@@ -12,14 +13,15 @@ public class Turn {
     @Transient
     private Validator validator;
 
-    @ManyToOne
-    private Word guess;
+    @Column(name = "guess")
+    private String guess;
 
-    @ManyToOne
-    private Word toBeGuessedWord;
+    // TODO: We have to figure out if this class is needed at all..
+    @Column(name = "theWord")
+    private String toBeGuessedWord;
 
     public Turn() {}
-    public Turn(Validator validator, Word guess, Word toBeGuessedWord) {
+    public Turn(Validator validator, String guess, String toBeGuessedWord) {
         this.validator = validator;
         this.guess = guess;
         this.toBeGuessedWord = toBeGuessedWord;

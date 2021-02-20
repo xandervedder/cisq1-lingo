@@ -1,7 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import nl.hu.cisq1.lingo.trainer.domain.exception.RoundFinishedException;
-import nl.hu.cisq1.lingo.words.domain.Word;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +11,8 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoundTest {
-    private static final Word theWord = new Word("brood");
-    private static final Word bogusWord = new Word("blalb");
+    private static final String theWord = "brood";
+    private static final String bogusWord = "blalb";
     
     private Round instance = new Round(theWord);
 

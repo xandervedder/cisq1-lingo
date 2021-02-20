@@ -1,30 +1,29 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import nl.hu.cisq1.lingo.trainer.domain.exception.IncompatibleLengthException;
-import nl.hu.cisq1.lingo.words.domain.Word;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Validator {
-    public Feedback validate(Word guess, Word word) {
-        if (!guess.getLength().equals(word.getLength()))
+    public Feedback validate(String guess, String word) {
+        if (guess.length() != word.length())
             throw new IncompatibleLengthException();
 
         if (guess.equals(word))
-            return Feedback.correct(guess.getValue());
+            return Feedback.correct(guess);
 
         if (this.isFullyInvalid(guess))
-            return Feedback.invalid(guess.getValue());
+            return Feedback.invalid(guess);
 
-        var letters = guess.getValue().toCharArray();
-        var wordLetters = word.getValue().toCharArray();
+        var letters = guess.toCharArray();
+        var wordLetters = word.toCharArray();
 
         // The first *real* step is to validate three different Marks:
         // 1. INVALID - If the character is a digit or not a letter
         // 2. CORRECT - If the character is in the right spot and is equal
         // 3. ABSENT - If the character is not in the letter or is to be processed in the next step
-        var initialMarks = IntStream.range(0, guess.getLength())
+        var initialMarks = IntStream.range(0, guess.length())
                 .mapToObj(index -> {
                     var letter = letters[index];
                     var actualLetter = wordLetters[index];
@@ -65,12 +64,8 @@ public class Validator {
         );
     }
 
-    public boolean isFullyInvalid(Word guess) {
-        return guess.getValue().chars().allMatch(Character::isDigit);
-    }
-
-    public boolean isLetterInWord(Character letter, Word word) {
-        return this.isLetterInWord(letter, word.getValue());
+    public boolean isFullyInvalid(String guess) {
+        return guess.chars().allMatch(Character::isDigit);
     }
 
     public boolean isLetterInWord(Character letter, String word) {
