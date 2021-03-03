@@ -12,8 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.*;
  * - the WordService calls a test double instead of an actual repository
  */
 class WordServiceTest {
-
     @ParameterizedTest
     @DisplayName("requests a random word of a specified length from the repository")
     @MethodSource("randomWordExamples")
@@ -38,6 +36,14 @@ class WordServiceTest {
         String result = service.provideRandomWord(wordLength);
 
         assertEquals(word, result);
+    }
+
+    static Stream<Arguments> randomWordExamples() {
+        return Stream.of(
+                Arguments.of(5, "tower"),
+                Arguments.of(6, "castle"),
+                Arguments.of(7, "knights")
+        );
     }
 
     @Test
@@ -55,11 +61,24 @@ class WordServiceTest {
         );
     }
 
-    static Stream<Arguments> randomWordExamples() {
+    @ParameterizedTest
+    @DisplayName("checks if the giving guess exists")
+    @MethodSource("provideWordValues")
+    void testIfGuessExists(String guess, boolean exists) {
+        SpringWordRepository mockRepository = mock(SpringWordRepository.class);
+        when(mockRepository.existsByValue(guess)).thenReturn(exists);
+
+        var service = new WordService(mockRepository);
+
+        assertEquals(exists, service.wordExists(guess));
+    }
+
+    static Stream<Arguments> provideWordValues() {
         return Stream.of(
-                Arguments.of(5, "tower"),
-                Arguments.of(6, "castle"),
-                Arguments.of(7, "knights")
+                Arguments.of("banaan", true),
+                Arguments.of("aaaaaa", false),
+                Arguments.of("ababab", false),
+                Arguments.of("012345", false)
         );
     }
 }
