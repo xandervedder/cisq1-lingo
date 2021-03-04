@@ -27,29 +27,9 @@ class FeedbackTest {
     }
 
     @Test
-    @DisplayName("The guess is valid when it doesn't contain any numbers")
-    void guessIsValid() {
-        var feedback = new Feedback(List.of(Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.ABSENT));
-        assertTrue(feedback.isGuessValid());
-    }
-
-    @Test
-    @DisplayName("The guess is invalid when it contains one or more numbers")
-    void guessIsInvalid() {
-        var feedback = new Feedback(List.of(Mark.ABSENT, Mark.CORRECT, Mark.INVALID, Mark.CORRECT, Mark.ABSENT));
-        assertFalse(feedback.isGuessValid());
-    }
-
-    @Test
     @DisplayName("Word is guessed when using the static 'correct' constructor")
     void wordIsGuessedUsingStaticConstructor() {
         assertTrue(Feedback.correct("woord").isWordGuessed());
-    }
-
-    @Test
-    @DisplayName("The guess is invalid when using the static 'invalid' constructor")
-    void guessIsInvalidUsingStaticConstructor() {
-        assertFalse(Feedback.invalid("woord").isGuessValid());
     }
 
     @ParameterizedTest
@@ -61,12 +41,6 @@ class FeedbackTest {
 
     private static Stream<Arguments> provideHintExamples() {
         return Stream.of(
-                Arguments.of(
-                        new Hint(List.of('.', '.', '.', '.', '.')),
-                        new Feedback(List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID)),
-                        new Hint(List.of('.', '.', '.', '.', '.')),
-                        "kaart"
-                ),
                 Arguments.of(
                         new Hint(List.of('b', 'a', 'a', 'r', 'd')),
                         new Feedback(List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT)),
@@ -86,24 +60,11 @@ class FeedbackTest {
                         "woord"
                 ),
                 Arguments.of(
-                        new Hint(List.of('w', '.', '.', 'r', 'd')),
-                        new Feedback(List.of(Mark.CORRECT, Mark.INVALID, Mark.INVALID, Mark.CORRECT, Mark.CORRECT)),
-                        new Hint(List.of('.', '.', '.', '.', '.')),
-                        "woord"
-                ),
-                Arguments.of(
-                        new Hint(List.of('.', '.', '.', '.', '.')),
-                        new Feedback(List.of(Mark.ABSENT, Mark.INVALID, Mark.INVALID, Mark.ABSENT, Mark.ABSENT)),
-                        new Hint(List.of('.', '.', '.', '.', '.')),
-                        "woord"
-                ),
-                Arguments.of(
                         new Hint(List.of('k', '+', '.', '.', '.')),
                         new Feedback(List.of(Mark.CORRECT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT)),
                         new Hint(List.of('.', '.', '.', '.', '.')),
                         "kaart"
                 )
-                // TODO: No previous based hints are here yet
         );
     }
 }

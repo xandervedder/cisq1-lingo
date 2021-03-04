@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -19,10 +18,6 @@ import java.util.stream.IntStream;
 public class Feedback {
     public static Feedback correct(String attempt) {
         return new Feedback(attempt.chars().mapToObj(i -> Mark.CORRECT).collect(Collectors.toList()));
-    }
-
-    public static Feedback invalid(String attempt) {
-        return new Feedback(attempt.chars().mapToObj(i -> Mark.INVALID).collect(Collectors.toList()));
     }
 
     @Id
@@ -40,10 +35,6 @@ public class Feedback {
 
     public boolean isWordGuessed() {
         return this.marks.stream().allMatch(Mark.CORRECT::equals);
-    }
-
-    public boolean isGuessValid() {
-        return this.marks.stream().allMatch(Predicate.not(Mark.INVALID::equals));
     }
 
     public Hint giveHint(Hint previousHint, String wordToGuess) {
