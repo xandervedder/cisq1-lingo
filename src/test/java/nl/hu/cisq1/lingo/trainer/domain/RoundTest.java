@@ -71,4 +71,15 @@ class RoundTest {
                 Arguments.of(false, 3)
         );
     }
+
+    @Test
+    @DisplayName("revealWord should show construct the correct hint")
+    void shouldConstructCorrectHint() {
+        var marks = List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT);
+        this.instance.revealWord();
+
+        assertEquals(new Feedback(marks),
+                this.instance.getCurrentFeedback());
+        assertEquals(new Hint(List.of('b', 'r', 'o', 'o', 'd')), this.instance.getCurrentHint());
+    }
 }

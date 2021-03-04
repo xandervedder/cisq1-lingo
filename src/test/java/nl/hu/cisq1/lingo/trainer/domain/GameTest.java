@@ -115,6 +115,19 @@ class GameTest {
         );
     }
 
+    @Test
+    @DisplayName("lastRound should return the last round in the list")
+    void shouldReturnTheLastRoundInTheList() {
+        this.instance.startNewRound(theWord);
+        assertEquals(new Round(theWord).getToBeGuessedWord(), this.instance.lastRound().getToBeGuessedWord());
+    }
+
+    @Test
+    @DisplayName("lastRound should return an empty round when the list is empty")
+    void shouldReturnEmptyRoundIfListIsEmpty() {
+        assertNotEquals(new Round(theWord).getToBeGuessedWord(), this.instance.lastRound().getToBeGuessedWord());
+    }
+
     @ParameterizedTest
     @DisplayName("calculateScore should return the correct score based on the rounds that have passed")
     @MethodSource("provideArgumentsForCalculateScore")
