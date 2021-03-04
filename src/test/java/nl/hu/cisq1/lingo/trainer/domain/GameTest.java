@@ -1,6 +1,7 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import nl.hu.cisq1.lingo.trainer.domain.exception.ActiveRoundException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.GameOverException;
 import nl.hu.cisq1.lingo.trainer.domain.exception.NoActiveRoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,6 +66,25 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("game should throw when trying to start a new round after a player has lost")
+    void shouldThrowGameOverExceptionWhenThePlayerIsGameOver() {
+        this.instance.startNewRound(theWord);
+        for (int i = 0; i < 5; i++)
+            this.instance.play(incorrectWord);
+
+        assertThrows(GameOverException.class, () -> this.instance.startNewRound(theWord));
+    }
+
+    @Test
+    @DisplayName("game shouldn't throw when trying to start a game a player hasn't lost")
+    void shouldNotThrowWhenTHePlayerIsNotGameOver() {
+        this.instance.startNewRound(theWord);
+        this.instance.play(theWord);
+
+        assertDoesNotThrow(() -> this.instance.startNewRound(theWord));
+    }
+
+    @Test
     @DisplayName("game shouldn't throw when trying to play a game with an active round")
     void shouldNotThrowExceptionWhenThereIsAnActiveRoundToPlay() {
         this.instance.startNewRound(theWord);
@@ -83,14 +103,15 @@ class GameTest {
         assertEquals(expected, this.instance.currentLetterLength());
     }
 
-    private static Stream<Arguments> provideArgumentsForLetterLength() {
+    static Stream<Arguments> provideArgumentsForLetterLength() {
         return Stream.of(
-                Arguments.of(5, List.of(theWord), List.of(theWord)),
-                Arguments.of(6, List.of(theWord, theWord), List.of(theWord)),
-                Arguments.of(7, List.of(theWord, theWord, theWord), List.of(theWord)),
-                Arguments.of(5, List.of(theWord, theWord, theWord, theWord), List.of(theWord)),
-                Arguments.of(6, List.of(theWord, theWord, theWord, theWord, theWord), List.of(theWord)),
-                Arguments.of(7, List.of(theWord, theWord, theWord, theWord, theWord, theWord), List.of(theWord))
+                Arguments.of(5, List.of(), List.of()),
+                Arguments.of(6, List.of(theWord), List.of(theWord)),
+                Arguments.of(7, List.of(theWord, theWord), List.of(theWord)),
+                Arguments.of(5, List.of(theWord, theWord, theWord), List.of(theWord)),
+                Arguments.of(6, List.of(theWord, theWord, theWord, theWord), List.of(theWord)),
+                Arguments.of(7, List.of(theWord, theWord, theWord, theWord, theWord), List.of(theWord)),
+                Arguments.of(5, List.of(theWord, theWord, theWord, theWord, theWord, theWord), List.of(theWord))
         );
     }
 
@@ -105,11 +126,13 @@ class GameTest {
         assertEquals(expectedScore, this.instance.calculateScore());
     }
 
-    private static Stream<Arguments> provideArgumentsForCalculateScore() {
+    static Stream<Arguments> provideArgumentsForCalculateScore() {
         return Stream.of(
                 Arguments.of(10, List.of(theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord)),
                 Arguments.of(20, List.of(theWord, theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord)),
-                Arguments.of(30, List.of(theWord, theWord, theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord))
+                Arguments.of(30, List.of(theWord, theWord, theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord)),
+                // Unfinished rounds case:
+                Arguments.of(0, List.of(theWord), List.of(incorrectWord, incorrectWord, incorrectWord))
         );
     }
 }
