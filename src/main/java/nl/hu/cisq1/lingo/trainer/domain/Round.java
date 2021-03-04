@@ -18,22 +18,22 @@ public class Round {
     private Long id;
 
     @Getter
-    @Transient
+    @OneToOne(cascade = CascadeType.ALL)
     private Hint currentHint;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Feedback> feedbackList;
-
-    @OneToMany
-    private List<Turn> turns;
 
     @Column(name = "theWord")
     private String toBeGuessedWord;
 
+    @Getter
+    @Transient
+    private Feedback currentFeedback;
+
     public Round() {}
     public Round(String toBeGuessedWord) {
         this.feedbackList = new ArrayList<>(5);
-        this.turns = new ArrayList<>(5);
         this.toBeGuessedWord = toBeGuessedWord;
 
         var startingHints = toBeGuessedWord.chars()
@@ -44,29 +44,27 @@ public class Round {
         this.currentHint = new Hint(startingHints);
     }
 
-    public Feedback continueRound(String guess) {
+    public void continueRound(String guess) {
         if (this.isRoundFinished())
             throw new RoundFinishedException();
 
-        var turn = new Turn(VALIDATOR, guess, this.toBeGuessedWord);
-        this.turns.add(turn);
+        this.currentFeedback = VALIDATOR.validate(guess, this.toBeGuessedWord);
+        this.feedbackList.add(this.currentFeedback);
 
-        var feedback = turn.doTurn();
-        this.feedbackList.add(feedback);
-
-        var hint = feedback.giveHint(this.currentHint, this.toBeGuessedWord);
-
-        // TODO: you can probably remove this:
+        var hint = this.currentFeedback.giveHint(this.currentHint, this.toBeGuessedWord);
         this.currentHint.replaceWith(hint.getValues());
-
-        return feedback;
     }
 
     public Score getScore() {
-        return new Score(this.turns.size());
+        return new Score(this.feedbackList.size());
     }
 
     public boolean isRoundFinished() {
-        return this.turns.size() >= MAX_TRIES || this.feedbackList.stream().anyMatch(Feedback::isWordGuessed);
+        return this.feedbackList.size() >= MAX_TRIES || this.feedbackList.stream().anyMatch(Feedback::isWordGuessed);
+    }
+
+    public void revealWord() {
+        this.currentFeedback = VALIDATOR.validate(this.toBeGuessedWord, this.toBeGuessedWord);
+        this.currentHint = this.currentFeedback.giveHint(this.currentHint, this.toBeGuessedWord);
     }
 }
