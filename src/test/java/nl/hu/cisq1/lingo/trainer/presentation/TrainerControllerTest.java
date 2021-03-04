@@ -65,7 +65,7 @@ class TrainerControllerTest {
     @Test
     @DisplayName("should return the correct game id after starting a game")
     void shouldReturnCorrectGameIdInDtoAfterStartingGame() {
-        assertEquals(1L, this.instance.startGame().id);
+        assertEquals(1L, this.instance.startGame().getId());
     }
 
     @Test
@@ -77,7 +77,7 @@ class TrainerControllerTest {
     @Test
     @DisplayName("should return the correct game id after starting a round")
     void shouldReturnCorrectGameIdInDtoAfterStartingRound() {
-        assertEquals(1L, this.instance.startRound(this.gameIdDto).id);
+        assertEquals(1L, this.instance.startRound(this.gameIdDto).getId());
     }
 
     @Test
@@ -89,7 +89,7 @@ class TrainerControllerTest {
     @Test
     @DisplayName("should return the correct game id after continuing a round")
     void shouldReturnCorrectGameIdInDtoAfterContinuingRound() {
-        assertEquals(1L, this.instance.continueRound(this.guessDto).id);
+        assertEquals(1L, this.instance.continueRound(this.guessDto).getId());
     }
 
     @Test
@@ -102,7 +102,7 @@ class TrainerControllerTest {
     @DisplayName("should have the correct amount of rounds in dto")
     void shouldHaveTheCorrectAmountOfRoundsInDto() {
         when(this.game.getRounds()).thenReturn(List.of(new Round(), new Round(), new Round()));
-        assertEquals(3, this.instance.historyFromGame(1L).roundHistory.size());
+        assertEquals(3, this.instance.historyFromGame(1L).getRoundHistory().size());
     }
 
     @Test
@@ -114,6 +114,6 @@ class TrainerControllerTest {
     @Test
     @DisplayName("should return the correct score in dto")
     void shouldHaveTheCorrectScoreInDto() {
-        assertEquals(0, this.instance.scoreFromGame(1L).score);
+        assertEquals(0, this.instance.scoreFromGame(1L).getScore());
     }
 }
