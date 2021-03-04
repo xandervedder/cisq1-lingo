@@ -20,7 +20,7 @@ class ScoreTest {
 
     private static Stream<Arguments> provideArgumentsForCalculation() {
         return Stream.of(
-                Arguments.of(30, 0),
+                Arguments.of(0, 0),
                 Arguments.of(25, 1),
                 Arguments.of(20, 2),
                 Arguments.of(15, 3),

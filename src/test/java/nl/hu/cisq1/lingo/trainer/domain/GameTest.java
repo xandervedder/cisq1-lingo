@@ -1,8 +1,8 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import nl.hu.cisq1.lingo.trainer.domain.exception.ActiveRoundException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.GameOverException;
 import nl.hu.cisq1.lingo.trainer.domain.exception.NoActiveRoundException;
-import nl.hu.cisq1.lingo.words.domain.Word;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +16,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
-    private static final Word theWord = new Word("banaan");
-    private static final Word incorrectWord = new Word("banana");
+    private static final String theWord = "banaan";
+    private static final String incorrectWord = "banana";
 
     private Game instance = new Game();
 
@@ -66,6 +66,25 @@ class GameTest {
     }
 
     @Test
+    @DisplayName("game should throw when trying to start a new round after a player has lost")
+    void shouldThrowGameOverExceptionWhenThePlayerIsGameOver() {
+        this.instance.startNewRound(theWord);
+        for (int i = 0; i < 5; i++)
+            this.instance.play(incorrectWord);
+
+        assertThrows(GameOverException.class, () -> this.instance.startNewRound(theWord));
+    }
+
+    @Test
+    @DisplayName("game shouldn't throw when trying to start a game a player hasn't lost")
+    void shouldNotThrowWhenTHePlayerIsNotGameOver() {
+        this.instance.startNewRound(theWord);
+        this.instance.play(theWord);
+
+        assertDoesNotThrow(() -> this.instance.startNewRound(theWord));
+    }
+
+    @Test
     @DisplayName("game shouldn't throw when trying to play a game with an active round")
     void shouldNotThrowExceptionWhenThereIsAnActiveRoundToPlay() {
         this.instance.startNewRound(theWord);
@@ -75,25 +94,44 @@ class GameTest {
     @ParameterizedTest
     @DisplayName("getLetterLength should return the correct letter length")
     @MethodSource("provideArgumentsForLetterLength")
-    void shouldReturnCorrectLetterLengthBasedOnRoundNumber(Integer expected, Integer roundNumber) {
-        assertEquals(expected, this.instance.getLetterLength(roundNumber));
+    void shouldReturnCorrectLetterLengthBasedOnRoundNumber(Integer expected, List<String> wordsToBeGuessed, List<String> guesses) {
+        wordsToBeGuessed.forEach(word -> {
+            this.instance.startNewRound(word);
+            guesses.forEach(this.instance::play);
+        });
+
+        assertEquals(expected, this.instance.currentLetterLength());
     }
 
-    private static Stream<Arguments> provideArgumentsForLetterLength() {
+    static Stream<Arguments> provideArgumentsForLetterLength() {
         return Stream.of(
-                Arguments.of(5, 1),
-                Arguments.of(6, 2),
-                Arguments.of(7, 3),
-                Arguments.of(5, 10),
-                Arguments.of(6, 11),
-                Arguments.of(7, 12)
+                Arguments.of(5, List.of(), List.of()),
+                Arguments.of(6, List.of(theWord), List.of(theWord)),
+                Arguments.of(7, List.of(theWord, theWord), List.of(theWord)),
+                Arguments.of(5, List.of(theWord, theWord, theWord), List.of(theWord)),
+                Arguments.of(6, List.of(theWord, theWord, theWord, theWord), List.of(theWord)),
+                Arguments.of(7, List.of(theWord, theWord, theWord, theWord, theWord), List.of(theWord)),
+                Arguments.of(5, List.of(theWord, theWord, theWord, theWord, theWord, theWord), List.of(theWord))
         );
+    }
+
+    @Test
+    @DisplayName("lastRound should return the last round in the list")
+    void shouldReturnTheLastRoundInTheList() {
+        this.instance.startNewRound(theWord);
+        assertEquals(new Round(theWord).getToBeGuessedWord(), this.instance.lastRound().getToBeGuessedWord());
+    }
+
+    @Test
+    @DisplayName("lastRound should return an empty round when the list is empty")
+    void shouldReturnEmptyRoundIfListIsEmpty() {
+        assertNotEquals(new Round(theWord).getToBeGuessedWord(), this.instance.lastRound().getToBeGuessedWord());
     }
 
     @ParameterizedTest
     @DisplayName("calculateScore should return the correct score based on the rounds that have passed")
     @MethodSource("provideArgumentsForCalculateScore")
-    void shouldReturnCorrectScoreBasedOnTheRounds(Integer expectedScore, List<Word> wordsToBeGuessed, List<Word> guesses) {
+    void shouldReturnCorrectScoreBasedOnTheRounds(Integer expectedScore, List<String> wordsToBeGuessed, List<String> guesses) {
         wordsToBeGuessed.forEach(word -> {
             this.instance.startNewRound(word);
             guesses.forEach(this.instance::play);
@@ -101,11 +139,13 @@ class GameTest {
         assertEquals(expectedScore, this.instance.calculateScore());
     }
 
-    private static Stream<Arguments> provideArgumentsForCalculateScore() {
+    static Stream<Arguments> provideArgumentsForCalculateScore() {
         return Stream.of(
                 Arguments.of(10, List.of(theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord)),
                 Arguments.of(20, List.of(theWord, theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord)),
-                Arguments.of(30, List.of(theWord, theWord, theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord))
+                Arguments.of(30, List.of(theWord, theWord, theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord)),
+                // Unfinished rounds case:
+                Arguments.of(0, List.of(theWord), List.of(incorrectWord, incorrectWord, incorrectWord))
         );
     }
 }
