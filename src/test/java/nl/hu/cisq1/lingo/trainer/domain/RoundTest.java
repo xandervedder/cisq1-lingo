@@ -4,9 +4,13 @@ import nl.hu.cisq1.lingo.trainer.domain.exception.RoundFinishedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,5 +52,23 @@ class RoundTest {
     @DisplayName("round should provide starting hint letter after initialization")
     void shouldProvideStartingHintLetterAfterCreation() {
         assertEquals(new Hint(List.of('b', '.', '.', '.', '.')), this.instance.getCurrentHint());
+    }
+
+    @ParameterizedTest
+    @DisplayName("player has lost when exceeding max tries for current round")
+    @MethodSource("triesProvider")
+    void shouldLoseWhenTriesIsAtItsMax(boolean expected, int tries) {
+        for (int i = 1; i <= tries; i++)
+            this.instance.continueRound(bogusWord);
+
+        assertEquals(expected, this.instance.hasLost());
+    }
+
+    static Stream<Arguments> triesProvider() {
+        return Stream.of(
+                Arguments.of(true, 5),
+                Arguments.of(false, 1),
+                Arguments.of(false, 3)
+        );
     }
 }
