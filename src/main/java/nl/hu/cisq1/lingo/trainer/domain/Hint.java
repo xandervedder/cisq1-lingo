@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
 @Entity(name = "hint")
 public class Hint {
     private static final Character DOT = '.';
+    private static final Character PLUS = '+';
 
     @Id
     @GeneratedValue
@@ -40,7 +41,7 @@ public class Hint {
                 .mapToObj(index -> {
                     var currentCharacter = this.values.get(index);
                     var newCharacter = values.get(index);
-                    if (currentCharacter.equals(DOT)) return newCharacter;
+                    if (currentCharacter.equals(DOT) || currentCharacter.equals(PLUS)) return newCharacter;
                     else return currentCharacter;
                 })
                 .collect(Collectors.toList());
