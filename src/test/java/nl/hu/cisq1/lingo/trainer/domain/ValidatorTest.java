@@ -35,12 +35,6 @@ class ValidatorTest {
         assertTrue(instance.validate("brood", correctWord).isWordGuessed());
     }
 
-    @Test
-    @DisplayName("validating invalid guess should return feedback that is invalid")
-    void shouldReturnFullyInvalidFeedbackAfterValidatingInvalidGuess() {
-        assertFalse(instance.validate("12395", correctWord).isGuessValid());
-    }
-
     @ParameterizedTest
     @DisplayName("validiting should return the correct feedback")
     @MethodSource("provideArgumentsForValidation")
@@ -51,19 +45,9 @@ class ValidatorTest {
     private static Stream<Arguments> provideArgumentsForValidation() {
         return Stream.of(
                 Arguments.of(
-                        new Feedback(List.of(Mark.CORRECT, Mark.INVALID, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT)),
-                        "k3uis",
-                        "kruis"
-                ),
-                Arguments.of(
-                        new Feedback(List.of(Mark.CORRECT, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.CORRECT)),
-                        "k-*-s",
-                        "kruis"
-                ),
-                Arguments.of(
-                        new Feedback(List.of(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT)),
-                        "kouis",
-                        "kruis"
+                        new Feedback(List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.PRESENT, Mark.PRESENT)),
+                        "banaan",
+                        "banana"
                 ),
                 Arguments.of(
                         new Feedback(List.of(Mark.CORRECT, Mark.PRESENT, Mark.CORRECT, Mark.CORRECT, Mark.PRESENT)),
@@ -76,56 +60,45 @@ class ValidatorTest {
                         "kastje"
                 ),
                 Arguments.of(
-                        new Feedback(List.of(Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT)),
+                        new Feedback(List.of(Mark.CORRECT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT)),
                         "aaabbb",
                         "bbbaaa"
                 ),
                 Arguments.of(
-                        new Feedback(List.of(Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.CORRECT, Mark.PRESENT)),
+                        new Feedback(List.of(Mark.CORRECT, Mark.PRESENT, Mark.ABSENT, Mark.PRESENT, Mark.CORRECT, Mark.PRESENT)),
                         "aaabab",
                         "bbbaaa"
                 ),
                 Arguments.of(
-                        new Feedback(List.of(Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT)),
+                        new Feedback(List.of(Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT, Mark.ABSENT)),
                         "aaaaaa",
                         "bbbbbb"
+                ),
+                Arguments.of(
+                        new Feedback(List.of(Mark.CORRECT, Mark.PRESENT, Mark.ABSENT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT)),
+                        "gehoor",
+                        "onmens"
+                ),
+                Arguments.of(
+                        new Feedback(List.of(Mark.CORRECT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.CORRECT)),
+                        "aabbcc",
+                        "abcabc"
+                ),
+                Arguments.of(
+                        new Feedback(List.of(Mark.CORRECT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.ABSENT, Mark.ABSENT)),
+                        "alianna",
+                        "liniaal"
+                ),
+                Arguments.of(
+                        new Feedback(List.of(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT)),
+                        "heren",
+                        "haren"
+                ),
+                Arguments.of(
+                        new Feedback(List.of(Mark.CORRECT, Mark.PRESENT, Mark.PRESENT, Mark.PRESENT, Mark.CORRECT, Mark.CORRECT)),
+                        "eeaaae",
+                        "aaeeae"
                 )
         );
-    }
-
-    @Test
-    @DisplayName("isFullyInvalid should return true when giving digits")
-    void isFullyInvalidMethodShouldReturnTrueWhenGivingAllDigits() {
-        assertTrue(instance.isFullyInvalid("12345"));
-    }
-
-    @Test
-    @DisplayName("isFullyInvalid should return false when giving some digits")
-    void isFullyInvalidMethodShouldReturnFalseWhenGivingSomeDigits() {
-        assertFalse(instance.isFullyInvalid("sp4gh3tti"));
-    }
-
-    @Test
-    @DisplayName("isFullyInvalid should return false when giving no digits")
-    void isFullyInvalidMethodShouldReturnFalseWhenGivingNoDigits() {
-        assertFalse(instance.isFullyInvalid("spaghetti"));
-    }
-
-    @Test
-    @DisplayName("isLetterInWord should return true when there is one letter that matches")
-    void isLetterInWordShouldReturnTrueWhenThereIsALetterThatMatches() {
-        assertTrue(instance.isLetterInWord('b', correctWord));
-    }
-
-    @Test
-    @DisplayName("isLetterInWord should return true when there are multiple letters that match")
-    void isLetterInWordShouldReturnTrueWhenThereAreLettersThatMatch() {
-        assertTrue(instance.isLetterInWord('o', correctWord));
-    }
-
-    @Test
-    @DisplayName("isLetterInWord should return false when there aren't any letters that match")
-    void isLetterInWordShouldReturnFalseWhenThereAreNotAnyLettersThatMatch() {
-        assertFalse(instance.isLetterInWord('a', correctWord));
     }
 }
