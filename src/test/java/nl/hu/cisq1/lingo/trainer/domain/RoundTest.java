@@ -78,8 +78,7 @@ class RoundTest {
         var marks = List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT);
         this.instance.revealWord();
 
-        assertEquals(new Feedback(marks),
-                this.instance.getCurrentFeedback());
+        assertEquals(new Feedback(marks), this.instance.getCurrentFeedback());
         assertEquals(new Hint(List.of('b', 'r', 'o', 'o', 'd')), this.instance.getCurrentHint());
     }
 }
