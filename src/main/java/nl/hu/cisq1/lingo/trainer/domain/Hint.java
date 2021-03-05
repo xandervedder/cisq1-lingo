@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidHintReplacementException;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -25,6 +22,7 @@ public class Hint {
     private Long id;
 
     @Getter
+    @Column(name = "hintValues")
     @ElementCollection
     private List<Character> values;
 
