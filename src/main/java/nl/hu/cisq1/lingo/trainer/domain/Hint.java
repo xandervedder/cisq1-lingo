@@ -3,12 +3,9 @@ package nl.hu.cisq1.lingo.trainer.domain;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidHintReplacementException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.IncompatibleLengthException;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -25,6 +22,7 @@ public class Hint {
     private Long id;
 
     @Getter
+    @Column(name = "hintValues")
     @ElementCollection
     private List<Character> values;
 
@@ -35,7 +33,7 @@ public class Hint {
 
     public void replaceWith(List<Character> values) {
         if (this.values.size() != values.size())
-            throw new InvalidHintReplacementException();
+            throw new IncompatibleLengthException();
 
         this.values = IntStream.range(0, values.size())
                 .mapToObj(index -> {

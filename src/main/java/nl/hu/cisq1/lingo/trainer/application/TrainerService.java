@@ -1,5 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.application;
 
+import nl.hu.cisq1.lingo.trainer.application.exception.GameNotFoundException;
 import nl.hu.cisq1.lingo.trainer.application.exception.WordDoesNotExistInDatabaseException;
 import nl.hu.cisq1.lingo.trainer.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.trainer.domain.Game;
@@ -48,6 +49,7 @@ public class TrainerService {
     }
 
     public Game getGameById(Long id) {
-        return this.gameRepository.getOne(id);
+        return this.gameRepository.findById(id)
+                .orElseThrow(GameNotFoundException::new);
     }
 }

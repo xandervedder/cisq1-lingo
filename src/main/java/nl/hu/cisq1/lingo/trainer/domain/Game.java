@@ -80,6 +80,6 @@ public class Game {
                 .filter(Round::isRoundFinished)
                 .map(Round::getScore)
                 .map(Score::calculate)
-                .reduce(0, (total, element) -> total += element);
+                .reduce(0, Integer::sum);
     }
 }

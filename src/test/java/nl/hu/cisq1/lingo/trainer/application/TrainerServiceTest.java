@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -36,7 +37,7 @@ class TrainerServiceTest {
         when(this.game.getId()).thenReturn(1L);
         when(this.game.play(anyString())).thenReturn(new Round(theWord));
         when(gameRepository.save(isA(Game.class))).thenReturn(this.game);
-        when(gameRepository.getOne(anyLong())).thenReturn(this.game);
+        when(gameRepository.findById(anyLong())).thenReturn(Optional.of(this.game));
     }
 
     @Test
