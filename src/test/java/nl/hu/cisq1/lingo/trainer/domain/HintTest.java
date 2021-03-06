@@ -1,6 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
-import nl.hu.cisq1.lingo.trainer.domain.exception.InvalidHintReplacementException;
+import nl.hu.cisq1.lingo.trainer.domain.exception.IncompatibleLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +26,7 @@ class HintTest {
     void replaceHintWithException() {
         var hint = new Hint(List.of('.', '.', '.', '.', '.'));
         var newHints = List.of('.');
-        assertThrows(InvalidHintReplacementException.class, () -> hint.replaceWith(newHints));
+        assertThrows(IncompatibleLengthException.class, () -> hint.replaceWith(newHints));
     }
 
     @Test
