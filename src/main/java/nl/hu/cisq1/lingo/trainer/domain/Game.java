@@ -61,7 +61,7 @@ public class Game {
     public Round lastRound() {
         return this.rounds.stream()
                 .reduce((first, second) -> second)
-                .orElse(new Round());
+                .orElse(null);
     }
 
     public Integer currentLetterLength() {

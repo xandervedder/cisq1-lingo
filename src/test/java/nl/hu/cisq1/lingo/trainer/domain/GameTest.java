@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
     private static final String theWord = "banaan";
+    private static final String theWord2 = "stengel";
     private static final String incorrectWord = "banana";
 
     private Game instance = new Game();
@@ -119,13 +120,16 @@ class GameTest {
     @DisplayName("lastRound should return the last round in the list")
     void shouldReturnTheLastRoundInTheList() {
         this.instance.startNewRound(theWord);
-        assertEquals(new Round(theWord).getToBeGuessedWord(), this.instance.lastRound().getToBeGuessedWord());
+        this.instance.play(theWord);
+        this.instance.startNewRound(theWord2);
+
+        assertEquals(new Round(theWord2).getToBeGuessedWord(), this.instance.lastRound().getToBeGuessedWord());
     }
 
     @Test
-    @DisplayName("lastRound should return an empty round when the list is empty")
-    void shouldReturnEmptyRoundIfListIsEmpty() {
-        assertNotEquals(new Round(theWord).getToBeGuessedWord(), this.instance.lastRound().getToBeGuessedWord());
+    @DisplayName("lastRound should return null when the list is empty")
+    void shouldReturnNullIfListIsEmpty() {
+        assertNull(this.instance.lastRound());
     }
 
     @ParameterizedTest
@@ -136,6 +140,7 @@ class GameTest {
             this.instance.startNewRound(word);
             guesses.forEach(this.instance::play);
         });
+
         assertEquals(expectedScore, this.instance.calculateScore());
     }
 
@@ -144,7 +149,7 @@ class GameTest {
                 Arguments.of(10, List.of(theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord)),
                 Arguments.of(20, List.of(theWord, theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord)),
                 Arguments.of(30, List.of(theWord, theWord, theWord), List.of(incorrectWord, incorrectWord, incorrectWord, theWord)),
-                // Unfinished rounds case:
+                // Unfinished rounds case
                 Arguments.of(0, List.of(theWord), List.of(incorrectWord, incorrectWord, incorrectWord))
         );
     }

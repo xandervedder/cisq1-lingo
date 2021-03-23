@@ -1,12 +1,9 @@
 package nl.hu.cisq1.lingo.words.domain;
 
-import lombok.EqualsAndHashCode;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@EqualsAndHashCode
 @Entity(name = "words")
 public class Word {
     @Id
