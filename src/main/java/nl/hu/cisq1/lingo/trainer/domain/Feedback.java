@@ -1,7 +1,6 @@
 package nl.hu.cisq1.lingo.trainer.domain;
 
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.ElementCollection;
@@ -24,7 +23,6 @@ public class Feedback {
     @GeneratedValue
     private Long id;
 
-    @Setter
     @ElementCollection
     private List<Mark> marks;
 

@@ -21,7 +21,6 @@ public class Round {
     @OneToOne(cascade = CascadeType.ALL)
     private Hint currentHint;
 
-    @Getter
     @OneToMany(cascade = CascadeType.ALL)
     private List<Feedback> feedbackList;
 
@@ -66,8 +65,7 @@ public class Round {
         this.feedbackList.add(this.currentFeedback);
         this.tries++;
 
-        var hint = this.currentFeedback.giveHint(this.currentHint, this.toBeGuessedWord);
-        this.currentHint.replaceWith(hint.getValues());
+        this.currentFeedback.giveHint(this.currentHint, this.toBeGuessedWord);
     }
 
     public Score getScore() {

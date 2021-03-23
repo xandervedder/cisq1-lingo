@@ -95,9 +95,9 @@ class TrainerServiceTest {
     @Test
     @DisplayName("should return the correct score by gameId")
     void shouldReturnTheCorrectScoreByGameId() {
-        when(this.game.calculateScore()).thenReturn(0);
+        when(this.game.calculateScore()).thenReturn(25);
 
-        assertEquals(0, this.instance.getScoreFromGameById(1L));
+        assertEquals(25, this.instance.getScoreFromGameById(1L));
     }
 
     @Test
@@ -112,5 +112,7 @@ class TrainerServiceTest {
         when(this.game.lastRound()).thenReturn(round);
 
         assertEquals(hint, this.instance.continueRound(1L, theWord).lastRound().getCurrentHint());
+
+        verify(round, times(1)).revealWord();
     }
 }

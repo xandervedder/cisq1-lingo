@@ -45,6 +45,7 @@ class RoundTest {
     @DisplayName("round should throw exception when round is finished due to correct guess")
     void shouldNotBeAbleToContinueWhenTheRightWordWasGuessed() {
         this.instance.continueRound(theWord);
+
         assertThrows(RoundFinishedException.class, () -> this.instance.continueRound(bogusWord));
     }
 
