@@ -12,6 +12,8 @@ import java.util.function.Predicate;
 
 @Entity(name = "game")
 public class Game {
+    private static final int LETTER_LENGTH_CYCLE = 3;
+
     @Getter
     @Id
     @GeneratedValue
@@ -65,10 +67,7 @@ public class Game {
     }
 
     public Integer currentLetterLength() {
-        var size = this.rounds.size();
-        // The first round is an edge case
-        var index = ((size == 0 ? 1 : size + 1) - 1) % 3;
-        return switch(index) {
+        return switch(this.rounds.size() % LETTER_LENGTH_CYCLE) {
             case 1 -> 6;
             case 2 -> 7;
             default -> 5;
